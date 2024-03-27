@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Rasa', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        header {
+            margin-top: -50px;
+            font-size: 2em;
+            font-weight: bold;
+            color: #252728;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            font-family: 'Anton', sans-serif; /* Change the font */
+            font-size: 3em;
+        }
+
+        .search-bar {
+            margin-top: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #e3f7f7;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 300px;
+            /* Adjusted length */
+        }
+
+        button.search-btn {
+            margin-top: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #db3453;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.search-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Container Styles */
+        .container-wrapper {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            height: 50%;
+            z-index: 1;
+            margin-top: 80px;
+        }
+
+        .container {
+            flex: 1;
+            margin: 40px;
+            border: 2px solid #1d1d1e;
+            border-radius: 10px;
+            background-color: rgba(19, 38, 38, 0.6);
+            box-shadow: rgba(64, 214, 237, 0.4) 5px 5px, rgba(61, 157, 242, 0.3) 10px 10px, rgba(46, 137, 240, 0.2) 15px 15px, rgba(24, 91, 237, 0.1) 20px 20px, rgba(11, 96, 152, 0.05) 25px 25px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            /* Adjust the height as needed */
+        }
+
+        .container-text {
+            margin-top: 50px;
+            font-size: 1.5em;
+            color: #f3efee; /* Adjusted text color */
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.2em;
+            background-color: #1b191a;
+            color: rgb(252, 246, 246);
+            border-width: .2cap;
+            border-color: #f1f5f7;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 100px;
+        }
+
+        button:hover {
+            background-color: #d90d0d;
+        }
+
+        /* Slideshow Styles */
+        .slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide.active {
+            display: block;
+        }
+        .bottom-button {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.bottom-button button {
+    padding: 15px 25px;
+    font-size: 1.2em;
+    background-color: #1b191a;
+    color: rgb(252, 246, 246);
+    border-width: .2cap;
+    border-color: #f1f5f7;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.bottom-button button:hover {
+    background-color: #d90d0d;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Slideshow -->
+    <div class="slideshow">
+        <!-- Add more images as needed -->
+        <img class="slide active" src="/static/2.jpg" alt="Slide 1">
+        <img class="slide" src="/static/1.jpg" alt="Slide 2">
+        <img class="slide" src="/static/3.jpg" alt="Slide 3">
+        <img class="slide" src="/static/4.jpg" alt="Slide 4">
+
+    </div>
+
+    <header>
+        Welcome to the Placement Archive
+    </header>
+
+   
+
+    <!-- Container Wrapper -->
+    <div class="container-wrapper">
+        <!-- Container 1 -->
+        <div class="container">
+            <div class="container-text">View the placement records of previous academic year, companies visiting, cutoffs, packages and more.</div>
+            <a href="{{ url_for('companies') }}">
+                <button>Placement Trends</button>
+            </a>
+        </div>
+
+        <!-- Container 2 -->
+        <div class="container">
+            <div class="container-text">Explore questions asked by companies during interview rounds and filter accordingly.</div>
+            
+            <a href="{{ url_for('previous_year_questions') }}">
+        
+                <button>Previous Year Questions </button>
+            </a>
+        </div>
+
+        <!-- Container 3 -->
+        <div class="container">
+            <div class="container-text">Calculate your required CGPA in coming semesters to clear cutoffs for desired companies  </div>
+            <a href="{{ url_for('calculate_cgpa') }}">
+
+                <button>CGPA Calculator</button>
+            </a>
+        </div>
+    </div>
+    <div class="bottom-button">
+        <a href="{{ url_for('cdc') }}">
+            <button>CDC Page</button>
+        </a>
+    </div>
+
+ 
+    
+
+    <script>
+        // JavaScript for Slideshow
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Show the first slide initially
+        showSlide(currentSlide);
+
+        setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    </script>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,103 @@
+<!-- job_descriptions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Descriptions</title>
+<style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #000;
+            color: #fff;
+        }
+
+        h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: 35px;
+            text-align: center;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #333;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #555;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            font-family: 'Dosis', sans-serif;
+            background-color: white;
+            color: black;
+        }
+
+        tr:nth-child(even) {
+            font-family: 'Dosis', sans-serif;
+            background-color: #55555500;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: darkred; /* Adjusted hover color */
+        }
+    </style>
+</head>
+<body>
+    <h1>Job Descriptions</h1>
+    <table border="1">
+        <tr>
+            <th>Job ID</th>
+            <th>Process ID</th>
+            <th>Job Title</th>
+            <th>Responsibilities</th>
+            <th>Skills/Experience</th>
+            <th>Educational Qualifications</th>
+            <th>PPO Offered</th>
+        </tr>
+        {% if job_descriptions %}
+            {% for job in job_descriptions %}
+                <tr>
+                    <td>{{ job[0] }}</td>
+                    <td>{{ job[1] }}</td>
+                    <td>{{ job[2] }}</td>
+                    <td>{{ job[3] }}</td>
+                    <td>{{ job[4] }}</td>
+                    <td>{{ job[5] }}</td>
+                    <td>{% if job[6] %}Yes{% else %}No{% endif %}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="7">No job descriptions available</td>
+            </tr>
+        {% endif %}
+    </table>
+</body>
+</html>

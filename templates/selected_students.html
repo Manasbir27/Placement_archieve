@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selected Students</title>
+
+    <style>
+        /* Add this to your existing CSS file or create a new one */
+#internship {
+    background-color: red;
+        color: white;
+        padding: 5px;
+        border: none;
+        cursor: pointer;
+}
+
+#internship option {
+    color: black; /* Text color for options */
+        background-color: #fff; /* Background color for options */
+}
+
+        /* Add this to your existing CSS file or create a new one */
+    #round {
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+    #round option {
+        color: black; /* Text color for options */
+        background-color: #fff; /* Background color for options */
+    }
+
+        #company {
+            background-color: red;
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #company option {
+            color: black; /* Text color of options */
+            background-color: white; /* Background color of options */
+        }
+
+        /* Add this to your existing CSS file or create a new one */
+        #year {
+            background-color: red;
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #year option {
+            color: black; /* Text color for options */
+            background-color: white; /* Background color for options */
+    }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #000;
+            color: #fff;
+        }
+
+        h1 {
+            font-family: 'Teko';
+            font-size: 35px; /* Adjust the size as needed */
+            text-align: center;
+            color: white;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        select {
+            margin-right: 10px;
+        }
+
+        
+        button {
+            padding: 10px 30px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color:red;
+            color: white;
+            border: outset;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color:darkred;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #333;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        th, td {
+            border: 1px solid #555;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            font-family: 'Dosis';
+            background-color: white;
+            color: black;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .flashes {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .flashes li {
+            background-color:none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Selected Students</h1>
+
+   
+
+    <!-- Add filters as needed -->
+    <form action="/selected_students" method="get">
+        <label for="company">Company:</label>
+        <select name="company_name" id="company">
+            <option value="all" {% if company_name == 'all' %}selected{% endif %}>All</option>
+            {% for company in companies %}
+            <option value="{{ company }}" {% if company_name == company %}selected{% endif %}>{{ company }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="year">Year:</label>
+        <select name="year" id="year">
+            <option value="all" {% if year == 'all' %}selected{% endif %}>All</option>
+            {% for yr in years %}
+            <option value="{{ yr }}" {% if year == yr %}selected{% endif %}>{{ yr }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="round">Round:</label>
+        <select name="round_number" id="round">
+            <option value="all" {% if round_number == 'all' %}selected{% endif %}>All</option>
+            {% for rnd in rounds %}
+            <option value="{{ rnd }}" {% if round_number == rnd %}selected{% endif %}>{{ rnd }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="internship">Internship:</label>
+        <select name="internship" id="internship">
+            <option value="all" {% if internship == 'all' %}selected{% endif %}>All</option>
+            <option value="yes" {% if internship == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if internship == 'no' %}selected{% endif %}>No</option>
+        </select>
+
+        <button type="submit">Filter</button>
+        
+    </form>
+
+    {% if students_data %}
+    <table>
+        <tr>
+            <th>Selection ID</th>
+            <th>Company Name</th>
+            <th>Year</th>
+            <th>Round Number</th>
+            <th>Name</th>
+            <th>Background</th>
+            <th>CGPA</th>
+            <th>Internship</th>
+            <th>Time</th>
+            <th>City</th>
+            <th>Questions</th>
+        </tr>
+        {% for student in students_data %}
+        <tr>
+            <td>{{ student[0] }}</td>
+            <td>{{ student[1] }}</td>
+            <td>{{ student[2] }}</td>
+            <td>{{ student[3] }}</td>
+            <td>{{ student[4] }}</td>
+            <td>{{ student[5] }}</td>
+            <td>{{ student[6] }}</td>
+            <td>{{ student[7] }}</td>
+            <td>{{ student[8] }}</td>
+            <td>{{ student[9] }}</td>
+            <td>{{ student[10] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No data available.</p>
+    {% endif %}
+
+
+<!-- Add this section to display the count of selected students -->
+<h2>Total Selected Students: {{ selected_students_count }}</h2>
+
+{% if students_data %}
+<table>
+    <!-- ... Existing table structure ... -->
+</table>
+{% else %}
+<p>No data available.</p>
+{% endif %}
+
+
+</body>
+
+</html>

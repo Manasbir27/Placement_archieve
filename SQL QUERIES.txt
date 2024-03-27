@@ -1,0 +1,248 @@
+CREATE DATABASE IF NOT EXISTS PlacementDatabase;
+USE PlacementDatabase;
+-- Create Tables
+CREATE TABLE IF NOT EXISTS PlacementProcess (
+    ProcessID INT PRIMARY KEY AUTO_INCREMENT,
+    CompanyName VARCHAR(100),
+    ProcessDate DATE,
+    Role VARCHAR(100),
+    Stream VARCHAR(50),
+    Eligibility VARCHAR(100),
+    MinCGPA DECIMAL(3, 2),
+    Participation INT,
+    Selection INT,
+    CTC DECIMAL(8, 2)
+);
+CREATE TABLE IF NOT EXISTS CompanyInfo (
+    CompanyName VARCHAR(100) PRIMARY KEY,
+    LaunchYear INT,
+    Headquarters VARCHAR(100),
+    Divisions VARCHAR(255),
+    Website VARCHAR(255),
+    Role VARCHAR(100),
+    Stream VARCHAR(50),
+    Eligibility VARCHAR(100),
+    MinCGPA DECIMAL(3, 2),
+    Participation INT,
+    Selection INT,
+    CTC DECIMAL(8, 2)
+);
+CREATE TABLE IF NOT EXISTS JobDescriptions (
+    JobID INT PRIMARY KEY AUTO_INCREMENT,
+    ProcessID INT,
+    JobTitle VARCHAR(100),
+    Responsibilities TEXT,
+    SkillsExperience TEXT,
+    EducationalQualifications TEXT,
+    PPOOffered BOOLEAN,
+    FOREIGN KEY (ProcessID) REFERENCES PlacementProcess(ProcessID)
+);
+CREATE TABLE IF NOT EXISTS Candidate (
+    CandidateID INT PRIMARY KEY AUTO_INCREMENT,
+    ProcessID INT,
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+    Phone VARCHAR(20),
+    EducationQualification VARCHAR(100),
+    CGPA DECIMAL(3, 2),
+    Status VARCHAR(50),
+    FOREIGN KEY (ProcessID) REFERENCES PlacementProcess(ProcessID)
+);
+-- Create Table for Previous Year Questions
+CREATE TABLE IF NOT EXISTS PreviousYearQuestions (
+    QuestionID INT PRIMARY KEY AUTO_INCREMENT,
+    CompanyName VARCHAR(100),
+    Year INT,
+    RoundNumber INT,
+    QuestionType VARCHAR(50),
+    QuestionText TEXT,
+    FOREIGN KEY (CompanyName) REFERENCES CompanyInfo(CompanyName)
+);
+CREATE TABLE IF NOT EXISTS StudentQuestions (
+    QuestionID INT PRIMARY KEY AUTO_INCREMENT,
+    StudentName VARCHAR(100),
+    QuestionText TEXT,
+    SubmissionTime DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS SelectedStudents (
+    SelectionID INT PRIMARY KEY AUTO_INCREMENT,
+    CompanyName VARCHAR(100),
+    Year INT,
+    RoundNumber INT,
+    Name VARCHAR(100),
+    Background VARCHAR(100),
+    CGPA DECIMAL(3, 2),
+    Internship VARCHAR(3),
+    Time DATETIME,
+    City VARCHAR(100),
+    Questions TEXT,
+    QuestionID1 INT,
+    QuestionID2 INT,
+    QuestionID3 INT,
+    FOREIGN KEY (CompanyName) REFERENCES CompanyInfo(CompanyName),
+    FOREIGN KEY (QuestionID1) REFERENCES PreviousYearQuestions(QuestionID),
+    FOREIGN KEY (QuestionID2) REFERENCES PreviousYearQuestions(QuestionID),
+    FOREIGN KEY (QuestionID3) REFERENCES PreviousYearQuestions(QuestionID)
+);
+-- Insert data into CompanyInfo
+INSERT INTO CompanyInfo (CompanyName, LaunchYear, Headquarters, Divisions, Website, Role, Stream, Eligibility, MinCGPA, Participation, Selection, CTC)
+VALUES
+    ('Dell', 1984, 'Hyderabad, India', 'Computers, Software', 'www.dell.com', 'Software Engineer', 'Computer Science', 'B.Tech', 7.5, 150, 75, 120000.00),
+    ('Goldman Sachs', 1869, 'Pune, India', 'Investment Banking', 'www.goldmansachs.com', 'Financial Analyst', 'Finance', 'MBA', 8.0, 100, 30, 150000.00),
+    ('Ansys', 1970, 'Delhi, India', 'Engineering Simulation Software', 'www.ansys.com', 'Simulation Engineer', 'Mechanical Engineering', 'B.Tech', 8.5, 120, 60, 130000.00),
+    ('Tata', 1868, 'Mumbai, India', 'Conglomerate', 'www.tata.com', 'Management Trainee', 'Business Administration', 'MBA', 7.0, 80, 25, 110000.00),
+    ('Microsoft', 1975, 'Noida, India', 'Technology', 'www.microsoft.com', 'Software Developer', 'Computer Science', 'B.Tech', 8.0, 200, 100, 140000.00);
+
+-- Insert data into PlacementProcess
+INSERT INTO PlacementProcess (CompanyName, ProcessDate, Role, Stream, Eligibility, MinCGPA, Participation, Selection, CTC)
+VALUES
+    ('Dell', '2022-01-15', 'Software Engineer', 'Computer Science', 'B.Tech', 7.5, 150, 75, 120000.00),
+    ('Goldman Sachs', '2022-02-20', 'Financial Analyst', 'Finance', 'MBA', 8.0, 100, 30, 150000.00),
+    ('Ansys', '2023-03-10', 'Simulation Engineer', 'Mechanical Engineering', 'B.Tech', 8.5, 120, 60, 130000.00),
+    ('Tata', '2023-04-05', 'Management Trainee', 'Business Administration', 'MBA', 7.0, 80, 25, 110000.00),
+    ('Microsoft', '2024-05-12', 'Software Developer', 'Computer Science', 'B.Tech', 8.0, 200, 100, 140000.00);
+-- Insert data into PreviousYearQuestions
+INSERT INTO PreviousYearQuestions (CompanyName, Year, RoundNumber, QuestionType, QuestionText)
+VALUES
+    ('Dell', 2021, 1, 'Coding', 'Write a program to reverse a linked list.'),
+    ('Goldman Sachs', 2020, 2, 'fundamentals', 'Explain the working of a binary search tree.'),
+    ('Ansys', 2021, 1, 'Coding', 'Implement a stack using arrays.'),
+    ('Tata', 2020, 2, 'HR', 'How do you handle stress at work?'),
+    ('Microsoft', 2021, 1, 'Coding', 'Find the middle element of a linked list.'),
+    ('Dell', 2021, 2, 'fundamentals', 'Explain the concept of virtual memory.'),
+    ('Goldman Sachs', 2020, 1, 'Coding', 'Implement quicksort algorithm.'),
+    ('Ansys', 2021, 2, 'fundamentals', 'Discuss the applications of finite element analysis.'),
+    ('Tata', 2020, 1, 'HR', 'What is your greatest professional achievement?'),
+    ('Microsoft', 2021, 2, 'Coding', 'Write a program to check if a string is a palindrome.'),
+    ('Dell', 2022, 1, 'Coding', 'Implement a queue using two stacks.'),
+    ('Goldman Sachs', 2022, 2, 'fundamentals', 'Discuss the importance of time complexity in algorithms.'),
+    ('Ansys', 2022, 1, 'Coding', 'Write a program to find the factorial of a number.'),
+    ('Tata', 2022, 2, 'HR', 'How do you prioritize tasks under tight deadlines?'),
+    ('Microsoft', 2022, 1, 'Coding', 'Implement a binary search algorithm.'),
+     ('Dell', 2022, 2, 'fundamentals', 'Discuss the importance of time complexity in algorithms.'),
+    ('Ansys', 2023, 1, 'Coding', 'Write a program to reverse a linked list.'),
+    ('Tata', 2023, 2, 'HR', 'How do you prioritize tasks under tight deadlines?'),
+    ('Microsoft', 2022, 1, 'Coding', 'Implement a queue using two stacks.'),
+    ('Goldman Sachs', 2023, 1, 'fundamentals', 'Explain the concept of virtual memory.'),
+    ('Ansys', 2022, 2, 'Coding', 'Write a program to find the factorial of a number.'),
+    ('Tata', 2022, 1, 'HR', 'What is your greatest professional achievement?'),
+    ('Microsoft', 2023, 2, 'Coding', 'Write a program to check if a string is a palindrome.'),
+    ('Goldman Sachs', 2022, 2, 'fundamentals', 'Discuss the applications of finite element analysis.'),
+    ('Ansys', 2022, 1, 'Coding', 'Implement a binary search algorithm.');
+    -- Insert sample data for JobDescriptions
+INSERT INTO JobDescriptions (ProcessID, JobTitle, Responsibilities, SkillsExperience, EducationalQualifications, PPOOffered)
+VALUES
+    (1, 'Software Engineer', 'Develop software applications', 'Python, Java, C++', 'B.Tech in Computer Science', true),
+    (2, 'Financial Analyst', 'Analyze financial data', 'Financial modeling, Data analysis', 'MBA in Finance', false),
+    (3, 'Simulation Engineer', 'Perform engineering simulations', 'Ansys, Finite element analysis', 'B.Tech in Mechanical Engineering', true),
+    (4, 'Management Trainee', 'Management training program', 'Business strategy, Leadership', 'MBA in Business Administration', false),
+    (5, 'Software Developer', 'Develop software solutions', 'C#, .NET, SQL', 'B.Tech in Computer Science', true);
+
+-- Insert sample data for Candidates
+INSERT INTO Candidate (ProcessID, Name, Email, Phone, EducationQualification, CGPA, Status)
+VALUES
+    (1, 'Sam', 'sam@email.com', '1234567890', 'B.Tech in Computer Science', 8.5, 'Selected'),
+    (2, 'Naman', 'naman@email.com', '9876543210', 'B.Tech in Electrical Engineering', 8.0, 'Not Selected'),
+    (3, 'Yathu', 'yathu@email.com', '5678901234', 'B.Tech in Mechanical Engineering', 7.5, 'Selected'),
+    (4, 'Ransaa', 'ransaa@email.com', '7890123456', 'B.Tech in Computer Science', 8.2, 'Not Selected'),
+    (5, 'Pandey', 'pandey@email.com', '6789012345', 'B.Tech in Information Technology', 8.8, 'Selected');
+
+-- Add Foreign Key Constraint for PreviousYearQuestions
+ALTER TABLE PreviousYearQuestions
+ADD FOREIGN KEY (CompanyName) REFERENCES CompanyInfo(CompanyName);
+-- Insert sample data for SelectedStudents
+INSERT INTO SelectedStudents (CompanyName, Year, RoundNumber, Name, Background, CGPA, Internship, Time, City, Questions, QuestionID1, QuestionID2, QuestionID3)
+VALUES
+    ('Dell', 2023, 1, 'Sam', 'Computer Science', 8.5, 'Yes', '2023-10-15 14:30:00', 'Pune', 'fundamentals, HR, Coding', 1, 2, 3),
+    ('Dell', 2023, 2, 'Naman', 'Electrical Engineering', 8.0, 'No', '2023-10-16 15:15:00', 'Mumbai', 'HR, Coding, fundamentals', 2, 3, 1),
+    ('Dell', 2023, 3, 'Yathu', 'Mechanical Engineering', 7.5, 'Yes', '2023-10-17 13:45:00', 'Delhi', 'Coding, fundamentals, HR', 3, 1, 2),
+    ('Dell', 2022, 1, 'Ransaa', 'Computer Science', 8.2, 'No', '2023-10-18 12:00:00', 'Noida', 'HR, Coding, fundamentals', 4, 5, 1),
+    ('Dell', 2022, 2, 'Pandey', 'Information Technology', 8.8, 'Yes', '2023-10-19 11:30:00', 'Bangalore', 'fundamentals, HR, Coding', 5, 1, 2),
+    ('Dell', 2021, 1, 'Sparsh', 'Computer Science', 8.0, 'Yes', '2021-10-10 14:00:00', 'Pune', 'fundamentals, HR, Coding', 1, 2, 3),
+    ('Dell', 2020, 2, 'Akshay', 'Electrical Engineering', 7.5, 'No', '2021-10-11 15:30:00', 'Mumbai', 'HR, Coding, fundamentals', 2, 3, 1),
+    ('Goldman Sachs', 2020, 1, 'Sophia', 'Finance', 8.5, 'Yes', '2021-10-12 13:45:00', 'Gurugram', 'Coding, fundamentals, HR', 3, 1, 2),
+    ('Goldman Sachs', 2019, 2, 'Geeta', 'Economics', 8.2, 'No', '2021-10-13 12:15:00', 'Hydrabad', 'HR, Coding, fundamentals', 4, 5, 1),
+    ('Ansys', 2021, 1, 'Babita', 'Mechanical Engineering', 7.8, 'Yes', '2021-10-14 11:30:00', 'Delhi', 'Coding, fundamentals, HR', 5, 1, 2),
+    ('Ansys', 2020, 2, 'Bajwa', 'Computer Science', 8.7, 'No', '2021-10-15 14:00:00', 'Noida', 'fundamentals, HR, Coding', 1, 2, 3),
+    ('Tata', 2020, 1, 'Ahmed', 'Business Administration', 7.0, 'Yes', '2021-10-16 15:30:00', 'Mumbai', 'HR, Coding, fundamentals', 2, 3, 1),
+    ('Tata', 2019, 2, 'Christ', 'Finance', 8.8, 'No', '2021-10-17 13:45:00', 'Bangalore', 'Coding, fundamentals, HR', 3, 1, 2),
+    ('Microsoft', 2021, 1, 'Ramu', 'Computer Science', 9.0, 'Yes', '2021-10-18 12:15:00', 'Karnataka', 'fundamentals, HR, Coding', 4, 5, 1),
+    ('Microsoft', 2020, 2, 'Parth', 'Information Technology', 8.5, 'No', '2021-10-19 11:30:00', 'Bangalore', 'HR, Coding, fundamentals', 5, 1, 2);
+
+DELIMITER //
+CREATE FUNCTION CalculateRequiredCGPA(
+    in_current_cgpa DECIMAL(4,2),
+    in_completed_semesters INT,
+    in_desired_company VARCHAR(50),
+    in_completed_credits INT,
+    in_credits_left INT
+)
+RETURNS VARCHAR(50) DETERMINISTIC
+BEGIN
+    DECLARE total_semesters INT DEFAULT 8;
+    DECLARE total_credits INT DEFAULT in_completed_credits + in_credits_left;
+    DECLARE required_cgpa DECIMAL(4,2);
+    DECLARE company_cgpa DECIMAL(4,2);
+
+    -- Mapping of companies to their CGPA requirements
+  CASE in_desired_company
+    WHEN 'Dell' THEN SET company_cgpa := 7.0;
+    WHEN 'Microsoft' THEN SET company_cgpa := 8.0;
+    WHEN 'TATA' THEN SET company_cgpa := 6.0;
+    WHEN 'ANSYS' THEN SET company_cgpa := 8.0;
+    WHEN 'GOLDMAN SACHS' THEN SET company_cgpa := 8.5;
+    -- Add more companies here
+    ELSE SET company_cgpa := 0.0; -- Default value if the company is not found
+END CASE;
+
+
+    -- Check if the student has already completed all semesters
+    IF in_completed_semesters >= total_semesters THEN
+        RETURN 'Already completed all semesters';
+    END IF;
+
+    -- Calculate the required CGPA per semester to achieve the desired CGPA for the company
+    SET required_cgpa = ((company_cgpa * total_credits) - (in_current_cgpa * in_completed_credits)) / in_credits_left;
+
+    -- Ensure the required CGPA is within valid bounds (0.00 to 10.00)
+    IF required_cgpa < 0.00 THEN
+        SET required_cgpa = 0.00;
+    ELSEIF required_cgpa > 10.00 THEN
+        RETURN 'Not possible';
+    END IF;
+
+    RETURN CONCAT('Required CGPA for ', in_desired_company, ': ', required_cgpa);
+END //
+DELIMITER ;
+
+
+-- Create Trigger to Update Participation and Selection Count
+DELIMITER //
+CREATE TRIGGER UpdateCounts BEFORE INSERT ON PlacementProcess
+FOR EACH ROW
+BEGIN
+    SET NEW.Participation = IFNULL(NEW.Participation, 0);
+    SET NEW.Selection = IFNULL(NEW.Selection, 0);
+
+    -- Update Participation and Selection counts based on the current record
+    UPDATE PlacementProcess
+    SET
+        Participation = Participation + NEW.Participation,
+        Selection = Selection + NEW.Selection;
+END;
+//
+DELIMITER ;
+
+
+-- Create Procedure to Retrieve Company Information
+DELIMITER //
+CREATE PROCEDURE GetCompanyInfo(IN companyName VARCHAR(100))
+BEGIN
+    SELECT * FROM CompanyInfo WHERE CompanyName = companyName;
+END;
+//
+DELIMITER ;
+
+select *from StudentQuestions;
+select*from jobdescriptions; 
+drop database placementdatabase;
